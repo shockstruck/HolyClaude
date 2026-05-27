@@ -63,6 +63,8 @@ Only needed if your volumes are on a network share (Samba, NAS, etc.):
 
 HolyClaude uses [Apprise](https://github.com/caronc/apprise) for notifications, supporting 100+ services including Discord, Telegram, Slack, Email, Pushover, Gotify, and more.
 
+Claude Code hooks, raw CLI hooks for Codex and Gemini CLI, and CloudCLI Codex chat completion/failure events use this same Apprise setup. Permission prompts are not sent through Apprise.
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NOTIFY_DISCORD` | *(unset)* | Discord webhook — `discord://webhook_id/webhook_token` |

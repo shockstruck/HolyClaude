@@ -4,6 +4,11 @@ All notable changes to HolyClaude will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.5] - 05/27/2026
+
+### Fixed
+- Sent Apprise notifications for Codex chat completion/failure events through HolyClaude's CloudCLI provider lifecycle, using the existing ~/.claude/notify-on flag and NOTIFY_* destinations.
+
 ## [1.2.4] - 05/27/2026
 
 ### Fixed

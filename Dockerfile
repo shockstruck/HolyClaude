@@ -171,6 +171,7 @@ COPY vendor/artifacts/siteboon-claude-code-ui-1.26.3.tgz /tmp/vendor/siteboon-cl
 
 # ---------- CloudCLI (web UI for Claude Code) ----------
 RUN npm i -g /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz && rm -f /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz
+COPY scripts/patch-cloudcli-apprise-notifications.mjs /tmp/patch-cloudcli-apprise-notifications.mjs
 RUN touch /usr/local/lib/node_modules/@siteboon/claude-code-ui/.env
 
 # ---------- Patch: preserve WebSocket frame type in plugin proxy (Issue #11) ----------
@@ -224,6 +225,9 @@ RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/a
     perl -pi -e 's/\Qchildren:N.OPTIONS.map(({value:C,label:j})=>s.jsx("option",{value:C,children:j},C+j))}\E/children:[...N.OPTIONS.map(({value:C,label:j})=>s.jsx("option",{value:C,children:j},C+j)),!N.OPTIONS.some(C=>C.value===k)\&\&k\&\&s.jsx("option",{value:k,children:k},k+"custom")].filter(Boolean)}/g' "$CLOUDCLI_BUNDLE" && \
     echo "[patch] bundle custom model select option applied" || \
     (echo "[patch] ERROR: bundle custom model select pattern not found"; exit 1)
+
+# patch: bridge Codex CloudCLI lifecycle events to Apprise (issue #17)
+RUN node /tmp/patch-cloudcli-apprise-notifications.mjs && rm -f /tmp/patch-cloudcli-apprise-notifications.mjs
 
 # ---------- CloudCLI plugins (baked into image) ----------
 USER claude

@@ -880,7 +880,7 @@ Even with all that, the risk surface is huge. Use Tailscale or Cloudflare Tunnel
 
 ## :bell: Notifications
 
-Walk away from your computer and know when your AI agents are done. Claude Code, Codex, and Gemini CLI all send notifications when a task completes. Uses [Apprise](https://github.com/caronc/apprise) — supports 100+ services including Discord, Telegram, Slack, Email, Pushover, Gotify, and more.
+Walk away from your computer and know when a task is done. Claude Code hooks, raw CLI hooks for Codex and Gemini CLI, and CloudCLI Codex chat completion/failure events use the same [Apprise](https://github.com/caronc/apprise) setup. Apprise supports 100+ services including Discord, Telegram, Slack, Email, Pushover, Gotify, and more.
 
 **To enable:**
 
@@ -898,8 +898,8 @@ See [configuration docs](docs/configuration.md#notifications-apprise) for all su
 **Events that trigger notifications:**
 | Event | What happened |
 |-------|--------------|
-| `stop` | Claude Code, Codex, or Gemini finished the current task |
-| `error` | A tool use failure occurred |
+| `stop` | Claude Code hooks, raw CLI hooks for Codex and Gemini CLI, or a CloudCLI Codex chat run finished |
+| `error` | A Claude Code hook, raw CLI hook, or CloudCLI Codex chat run failed |
 
 > Completely silent when not configured. No `NOTIFY_*` vars set? No flag file? Zero network calls. Zero log spam. Zero overhead.
 
