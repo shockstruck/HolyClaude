@@ -94,6 +94,17 @@ Claude Code can authenticate via web UI (OAuth) or `ANTHROPIC_API_KEY`. Other AI
 | `OPENAI_API_KEY` | (unset) | OpenAI API key |
 | `CURSOR_API_KEY` | (unset) | Cursor API key |
 
+### Codex Permission Modes
+
+HolyClaude provides configurable near-parity permission modes for Codex. These settings are intentionally split because CloudCLI Codex chat and the raw `codex` CLI read configuration through different paths.
+
+| Variable | Default | Valid values | Applies to | Behavior |
+|----------|---------|--------------|------------|----------|
+| `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE` | `acceptEdits` | `default`, `acceptEdits`, `bypassPermissions` | CloudCLI Codex chat | Runtime container config read by the CloudCLI Codex provider. Recreate the container after changing it. |
+| `HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE` | `default` | `default`, `acceptEdits`, `bypassPermissions` | Raw `codex` CLI | First-boot-only seed for new `~/.codex/config.toml`. Existing configs are not overwritten, and the generated value persists until you edit the file. |
+
+`acceptEdits` is the recommended value for both settings. `bypassPermissions` gives Codex full access with no approval. Docker still limits access to the container and mounted volumes, but anything reachable through `/workspace`, `/home/claude`, and other mounts can be read or changed. Use bypass only for trusted local workspaces.
+
 ---
 
 ## Volumes
@@ -110,6 +121,7 @@ Claude Code can authenticate via web UI (OAuth) or `ANTHROPIC_API_KEY`. Other AI
 | `settings.json` | Claude Code settings (permissions, hooks, model) |
 | `CLAUDE.md` | Claude's global memory — customize with your preferences |
 | `.credentials.json` | Anthropic API authentication (auto-created) |
+| `.codex/config.toml` | Raw Codex CLI config, created on first boot if missing |
 | `.holyclaude-bootstrapped` | Sentinel file — delete to re-run first-boot setup |
 
 ---

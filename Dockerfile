@@ -172,6 +172,7 @@ COPY vendor/artifacts/siteboon-claude-code-ui-1.26.3.tgz /tmp/vendor/siteboon-cl
 # ---------- CloudCLI (web UI for Claude Code) ----------
 RUN npm i -g /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz && rm -f /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz
 COPY scripts/patch-cloudcli-apprise-notifications.mjs /tmp/patch-cloudcli-apprise-notifications.mjs
+COPY scripts/patch-cloudcli-codex-permissions.mjs /tmp/patch-cloudcli-codex-permissions.mjs
 RUN touch /usr/local/lib/node_modules/@siteboon/claude-code-ui/.env
 
 # ---------- Patch: preserve WebSocket frame type in plugin proxy (Issue #11) ----------
@@ -228,6 +229,9 @@ RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/a
 
 # patch: bridge Codex CloudCLI lifecycle events to Apprise (issue #17)
 RUN node /tmp/patch-cloudcli-apprise-notifications.mjs && rm -f /tmp/patch-cloudcli-apprise-notifications.mjs
+
+# patch: configure Codex CloudCLI chat permission mode (issue #18)
+RUN node /tmp/patch-cloudcli-codex-permissions.mjs && rm -f /tmp/patch-cloudcli-codex-permissions.mjs
 
 # ---------- CloudCLI plugins (baked into image) ----------
 USER claude

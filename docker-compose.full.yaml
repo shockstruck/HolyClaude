@@ -66,3 +66,12 @@ services:
       # - GEMINI_API_KEY=
       # - OPENAI_API_KEY=
       # - CURSOR_API_KEY=
+
+      # --- Codex permission modes (optional) ---
+      # CloudCLI Codex chat runtime mode. Valid: default, acceptEdits, bypassPermissions.
+      # Recommended: acceptEdits. bypassPermissions gives full access with no approval;
+      # use it only for trusted local workspaces inside your Docker volume boundary.
+      # - HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE=acceptEdits
+      # Raw codex CLI first-boot mode. Only used when creating a new ~/.codex/config.toml.
+      # Existing Codex configs are not overwritten.
+      # - HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE=acceptEdits

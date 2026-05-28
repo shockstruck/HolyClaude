@@ -30,6 +30,9 @@ build.
   `server/routes/commands.js` into the bundled browser code, update the
   selected Claude model on model events, and keep a custom model option visible
   in the selector.
+- Codex permission-mode compatibility backport: adds HolyClaude's
+  `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE` runtime mapping for CloudCLI Codex
+  chat, including `default`, `acceptEdits`, and `bypassPermissions` modes.
 
 The unmodified upstream source is available from the links above, and the
 HolyClaude modifications are visible in the public Dockerfile.

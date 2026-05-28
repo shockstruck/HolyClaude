@@ -408,6 +408,15 @@ services:
       # - GEMINI_API_KEY=your_key
       # - OPENAI_API_KEY=your_key
       # - CURSOR_API_KEY=your_key
+      #
+      # CODEX PERMISSION MODES (optional)
+      # CloudCLI Codex chat reads HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE at runtime.
+      # Raw codex CLI reads HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE only when first creating ~/.codex/config.toml.
+      # Valid values: default, acceptEdits, bypassPermissions. Recommended: acceptEdits.
+      # bypassPermissions gives full access with no approval. Use it only for trusted local workspaces.
+      #
+      # - HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE=acceptEdits
+      # - HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE=acceptEdits
 ```
 
 Then:
@@ -474,6 +483,8 @@ The complete reference. Every variable, what it defaults to, what it does.
 | `GEMINI_API_KEY` | *(unset)* | Google Gemini API key |
 | `OPENAI_API_KEY` | *(unset)* | OpenAI API key (for Codex CLI, or use `codex login --device-auth` for ChatGPT subscription) |
 | `CURSOR_API_KEY` | *(unset)* | Cursor API key |
+| `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE` | `acceptEdits` | CloudCLI Codex chat runtime mode. Valid: `default`, `acceptEdits`, `bypassPermissions` |
+| `HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE` | `default` | Raw `codex` CLI first-boot mode for new `~/.codex/config.toml` only. Valid: `default`, `acceptEdits`, `bypassPermissions` |
 
 <p align="right">
   <a href="#top">↑ back to top</a>
@@ -820,6 +831,19 @@ This is how I personally run it. Edit `./data/claude/settings.json` on your host
 ```
 
 > **Bypass mode means Claude executes commands without confirmation.** It is powerful, but it can also run destructive commands quickly. Keep the shipped `acceptEdits` default unless you trust the workspace and every prompt you run.
+
+### Codex Permission Modes
+
+HolyClaude also ships configurable near-parity permission modes for Codex, with separate controls for CloudCLI Codex chat and the raw `codex` CLI.
+
+| Setting | Applies to | Default | When it is read |
+|---------|------------|---------|-----------------|
+| `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE` | CloudCLI Codex chat in the browser | `acceptEdits` | Runtime container config, read by the CloudCLI Codex provider |
+| `HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE` | Raw `codex` CLI config at `~/.codex/config.toml` | `default` | First boot only, when the file does not already exist |
+
+Valid values for both are `default`, `acceptEdits`, and `bypassPermissions`. `acceptEdits` is recommended. For CloudCLI Codex chat, the value is runtime container configuration, so changing it and recreating the container changes future chat runs. For the raw `codex` CLI, the value only seeds a new `~/.codex/config.toml`; existing configs are not overwritten, and the generated value persists until you edit that file yourself.
+
+`bypassPermissions` maps Codex to full access with no approval. Inside Docker, that still runs within the container and mounted volumes, but it can read and change anything reachable through those mounts, especially `/workspace` and persisted config under `/home/claude`. Use it only for trusted local workspaces, and don't expose CloudCLI directly to the public internet.
 
 <p align="right">
   <a href="#top">↑ back to top</a>
