@@ -58,8 +58,6 @@ jobs:
           images: |
             ${{ env.GHCR_IMAGE }}
           tags: |
-            type=raw,value=latest,enable=${{ matrix.variant == 'full' }}
-            type=raw,value=slim,enable=${{ matrix.variant == 'slim' }}
             type=semver,pattern={{version}},enable=${{ matrix.variant == 'full' }}
             type=semver,pattern={{version}}-slim,enable=${{ matrix.variant == 'slim' }}
 
