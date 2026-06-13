@@ -4,6 +4,14 @@ All notable changes to HolyClaude will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.7] - 06/13/2026
+
+### Changed
+- Switched the release pipeline to publish only to GitHub Container Registry (`ghcr.io/<owner>/holyclaude`), dropping the Docker Hub push and description sync.
+
+### Fixed
+- Removed the redundant CloudCLI mobile floating bottom navigation bar, which overlapped Shell pane buttons on narrow viewports; the same tabs remain reachable through the sidebar menu.
+
 ## [1.2.6] - 05/28/2026
 
 ### Added

@@ -227,6 +227,13 @@ RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/a
     echo "[patch] bundle custom model select option applied" || \
     (echo "[patch] ERROR: bundle custom model select pattern not found"; exit 1)
 
+# patch v1.2.7: remove redundant mobile floating bottom navigation bar (overlaps Shell pane buttons; navigation stays available via the sidebar menu)
+RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/assets/index-X3ImjnMV.js" && \
+    grep -q 'n&&s.jsx(Gte,{activeTab:y,setActiveTab:C,isInputFocused:N})' "$CLOUDCLI_BUNDLE" && \
+    perl -pi -e 's/\Qs.jsx(Gte,{activeTab:y,setActiveTab:C,isInputFocused:N})\E/null/g' "$CLOUDCLI_BUNDLE" && \
+    echo "[patch] mobile bottom navigation bar removed" || \
+    (echo "[patch] ERROR: bundle mobile bottom nav pattern not found"; exit 1)
+
 # patch: bridge Codex CloudCLI lifecycle events to Apprise (issue #17)
 RUN node /tmp/patch-cloudcli-apprise-notifications.mjs && rm -f /tmp/patch-cloudcli-apprise-notifications.mjs
 

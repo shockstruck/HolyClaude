@@ -33,6 +33,10 @@ build.
 - Codex permission-mode compatibility backport: adds HolyClaude's
   `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE` runtime mapping for CloudCLI Codex
   chat, including `default`, `acceptEdits`, and `bypassPermissions` modes.
+- Mobile bottom-nav removal patch: suppresses the redundant floating bottom
+  navigation bar in the bundled CloudCLI browser asset, which overlapped Shell
+  pane buttons on narrow viewports. The same tabs remain reachable through the
+  sidebar menu.
 
 The unmodified upstream source is available from the links above, and the
 HolyClaude modifications are visible in the public Dockerfile.
