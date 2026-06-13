@@ -4,22 +4,18 @@ All notable changes to HolyClaude will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [1.2.7] - 06/13/2026
-
-### Changed
-- Switched the release pipeline to publish only to GitHub Container Registry (`ghcr.io/<owner>/holyclaude`), dropping the Docker Hub push and description sync.
-
-### Fixed
-- Removed the redundant CloudCLI mobile floating bottom navigation bar, which overlapped Shell pane buttons on narrow viewports; the same tabs remain reachable through the sidebar menu.
-
-## [1.2.6] - 05/28/2026
+## [1.2.6] - 06/13/2026
 
 ### Added
 - Added configurable near-parity Codex permission modes for CloudCLI Codex chat with `HOLYCLAUDE_CODEX_CHAT_PERMISSION_MODE`.
 - Added first-boot raw `codex` CLI permission-mode seeding through `HOLYCLAUDE_CODEX_CLI_PERMISSION_MODE`.
 
 ### Changed
+- Switched the release pipeline to publish only to GitHub Container Registry (`ghcr.io/<owner>/holyclaude`), dropping the Docker Hub push and description sync.
 - Documented Codex permission behavior, safety caveats, compose examples, and CloudCLI modification notices.
+
+### Fixed
+- Removed the redundant CloudCLI mobile floating bottom navigation bar, which overlapped Shell pane buttons on narrow viewports; the same tabs remain reachable through the sidebar menu.
 
 ## [1.2.5] - 05/27/2026
 
