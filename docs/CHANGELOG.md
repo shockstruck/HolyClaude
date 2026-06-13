@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Fixed
 - Removed the redundant CloudCLI mobile floating bottom navigation bar, which overlapped Shell pane buttons on narrow viewports; the same tabs remain reachable through the sidebar menu.
+- Collapsed the empty bottom padding that the mobile layout reserved for the now-removed navigation bar, so the chat input sits at the bottom of the viewport instead of leaving dead space below it (safe-area inset preserved for home-indicator devices).
 
 ## [1.2.5] - 05/27/2026
 

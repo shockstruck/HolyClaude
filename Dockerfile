@@ -234,6 +234,13 @@ RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/a
     echo "[patch] mobile bottom navigation bar removed" || \
     (echo "[patch] ERROR: bundle mobile bottom nav pattern not found"; exit 1)
 
+# patch v1.2.6: collapse the bottom padding reserved for the removed mobile nav bar (dead space below the chat input); keep only the safe-area inset
+RUN CLOUDCLI_CSS="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/assets/index-BenyXiE2.css" && \
+    grep -qF -- '--mobile-nav-total: calc(var(--mobile-nav-height) + var(--mobile-nav-padding) + env(safe-area-inset-bottom, 0px))' "$CLOUDCLI_CSS" && \
+    perl -pi -e 's/\Q--mobile-nav-total: calc(var(--mobile-nav-height) + var(--mobile-nav-padding) + env(safe-area-inset-bottom, 0px))\E/--mobile-nav-total: env(safe-area-inset-bottom, 0px)/g' "$CLOUDCLI_CSS" && \
+    echo "[patch] mobile-nav reserved space collapsed" || \
+    (echo "[patch] ERROR: bundle --mobile-nav-total pattern not found"; exit 1)
+
 # patch: bridge Codex CloudCLI lifecycle events to Apprise (issue #17)
 RUN node /tmp/patch-cloudcli-apprise-notifications.mjs && rm -f /tmp/patch-cloudcli-apprise-notifications.mjs
 
