@@ -173,6 +173,7 @@ COPY vendor/artifacts/siteboon-claude-code-ui-1.26.3.tgz /tmp/vendor/siteboon-cl
 RUN npm i -g /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz && rm -f /tmp/vendor/siteboon-claude-code-ui-1.26.3.tgz
 COPY scripts/patch-cloudcli-apprise-notifications.mjs /tmp/patch-cloudcli-apprise-notifications.mjs
 COPY scripts/patch-cloudcli-codex-permissions.mjs /tmp/patch-cloudcli-codex-permissions.mjs
+COPY scripts/patch-cloudcli-keyboard-inset.mjs /tmp/patch-cloudcli-keyboard-inset.mjs
 RUN touch /usr/local/lib/node_modules/@siteboon/claude-code-ui/.env
 
 # ---------- Patch: preserve WebSocket frame type in plugin proxy (Issue #11) ----------
@@ -234,12 +235,15 @@ RUN CLOUDCLI_BUNDLE="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/a
     echo "[patch] mobile bottom navigation bar removed" || \
     (echo "[patch] ERROR: bundle mobile bottom nav pattern not found"; exit 1)
 
-# patch v1.2.6: collapse the bottom padding reserved for the removed mobile nav bar (dead space below the chat input); keep only the safe-area inset
+# patch v1.2.6: collapse the bottom padding reserved for the removed mobile nav bar; drive it from --keyboard-inset so it is zero (no dead space) when the keyboard is closed and equal to the keyboard height (lifts the chat input) when open
 RUN CLOUDCLI_CSS="/usr/local/lib/node_modules/@siteboon/claude-code-ui/dist/assets/index-BenyXiE2.css" && \
     grep -qF -- '--mobile-nav-total: calc(var(--mobile-nav-height) + var(--mobile-nav-padding) + env(safe-area-inset-bottom, 0px))' "$CLOUDCLI_CSS" && \
-    perl -pi -e 's/\Q--mobile-nav-total: calc(var(--mobile-nav-height) + var(--mobile-nav-padding) + env(safe-area-inset-bottom, 0px))\E/--mobile-nav-total: env(safe-area-inset-bottom, 0px)/g' "$CLOUDCLI_CSS" && \
-    echo "[patch] mobile-nav reserved space collapsed" || \
+    perl -pi -e 's/\Q--mobile-nav-total: calc(var(--mobile-nav-height) + var(--mobile-nav-padding) + env(safe-area-inset-bottom, 0px))\E/--mobile-nav-total: var(--keyboard-inset, env(safe-area-inset-bottom, 0px))/g' "$CLOUDCLI_CSS" && \
+    echo "[patch] mobile-nav reserved space now tracks --keyboard-inset" || \
     (echo "[patch] ERROR: bundle --mobile-nav-total pattern not found"; exit 1)
+
+# patch v1.2.6: inject visualViewport listener that publishes the soft-keyboard height as --keyboard-inset (companion to the CSS patch above)
+RUN node /tmp/patch-cloudcli-keyboard-inset.mjs && rm -f /tmp/patch-cloudcli-keyboard-inset.mjs
 
 # patch: bridge Codex CloudCLI lifecycle events to Apprise (issue #17)
 RUN node /tmp/patch-cloudcli-apprise-notifications.mjs && rm -f /tmp/patch-cloudcli-apprise-notifications.mjs

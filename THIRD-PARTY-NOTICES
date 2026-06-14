@@ -37,6 +37,11 @@ build.
   navigation bar in the bundled CloudCLI browser asset, which overlapped Shell
   pane buttons on narrow viewports. The same tabs remain reachable through the
   sidebar menu.
+- Mobile keyboard-inset patch: injects a `visualViewport` listener into
+  `dist/index.html` that publishes the soft-keyboard height as a
+  `--keyboard-inset` CSS variable, and rewires the bundled `--mobile-nav-total`
+  variable to consume it. This keeps the mobile chat input clear of the
+  on-screen keyboard without leaving dead space when the keyboard is closed.
 
 The unmodified upstream source is available from the links above, and the
 HolyClaude modifications are visible in the public Dockerfile.

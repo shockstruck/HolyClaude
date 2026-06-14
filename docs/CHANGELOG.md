@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ### Fixed
 - Removed the redundant CloudCLI mobile floating bottom navigation bar, which overlapped Shell pane buttons on narrow viewports; the same tabs remain reachable through the sidebar menu.
 - Collapsed the empty bottom padding that the mobile layout reserved for the now-removed navigation bar, so the chat input sits at the bottom of the viewport instead of leaving dead space below it (safe-area inset preserved for home-indicator devices).
+- Restored mobile keyboard avoidance: a `visualViewport` listener now drives the chat column's bottom inset from the live soft-keyboard height (via a `--keyboard-inset` CSS variable), so the chat input lifts above the on-screen keyboard while typing and collapses flush again when it closes — fixing the input being hidden behind the Android keyboard after the dead-space change.
 
 ## [1.2.5] - 05/27/2026
 
